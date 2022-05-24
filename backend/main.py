@@ -1,5 +1,5 @@
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 import random
 import numpy as np
 import matplotlib.pyplot as plt
