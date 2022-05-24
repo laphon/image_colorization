@@ -17,6 +17,7 @@ from PIL import Image
 import torchvision.transforms.functional as TF
 import aiofiles
 from typing import List
+import os
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -124,28 +125,28 @@ model.load_state_dict(torch.load('../models/resnet18_lab_2022-05-22_15:43:40:003
 extractor.to(device)
 model.to(device)
 
-def get_datasets(dataset_path):
-    dataset = torchvision.datasets.ImageFolder(dataset_path, transform=T.Compose([
+def compose (image):
+    return T.Compose([
         T.Resize((256, 256)),
         T.ToTensor()
-    ]))
-    return dataset
+    ])(image)
 
 def get_image(path):
-    image = Image.open(path)
-    x = TF.to_tensor(image)
-    x.unsqueeze_(0)
-    return x
+    return Image.open(path)
 
 @app.post("/file/")
 async def read_root(file: UploadFile = File(...)):
     try:
         contents = await file.read()
-        filename = "./imgs/" + file.filename
+        filename = os.path.abspath("./imgs/" + file.filename)
         with open(filename, 'wb') as f:
             f.write(contents)
-            img = get_image(filename)
-            print(img) 
+            img = compose(get_image(filename)) 
+            gray_img = convert_fn(img)
+            global_features = extractor(gray_img)
+            color_outputs = model(gray_img, global_features)
+            print(color_outputs)
+            return color_outputs
     except Exception as e:
         print(e)
         return {"message": "There was an error uploading the file"}
