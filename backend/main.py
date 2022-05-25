@@ -6,10 +6,8 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from skimage import color
 import gc
-import datetime
 import torch
 import torch.nn as nn
-import string
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as T
@@ -18,7 +16,11 @@ import torchvision.transforms.functional as TF
 import aiofiles
 from typing import List
 import os
-
+import io
+from starlette.responses import StreamingResponse
+import sys
+from cv2 import cv2
+from torchvision.utils import save_image
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -140,20 +142,41 @@ async def read_root(file: UploadFile = File(...)):
         contents = await file.read()
         filename = os.path.abspath("./imgs/" + file.filename)
         with open(filename, 'wb') as f:
-            f.write(contents)
-            img = compose(get_image(filename)) 
-            gray_img = convert_fn(img)
-            global_features = extractor(gray_img)
-            color_outputs = model(gray_img, global_features)
-            print(color_outputs)
-            return color_outputs
+            with torch.no_grad():
+                f.write(contents)
+                img = compose(get_image(filename)) 
+                gray_img = torch.stack([convert_fn(img)[0]]).to(device) 
+                global_features = extractor(gray_img).to(device)
+                # print(global_features.shape)
+                # print(gray_img.shape)
+                color_outputs = model(gray_img, global_features)
+                # print(color_outputs)
+                # return StreamingResponse(io.BytesIO(color_outputs.cpu().numpy().tobytes()), media_type="image/png")
+                # cv2.imwrite(color_outputs.cpu().numpy(), 'pic.png')
+                print(color_outputs)
+                save_image(color_outputs, 'color.png')
+                # return color_outputs.cpu().numpy()
     except Exception as e:
         print(e)
         return {"message": "There was an error uploading the file"}
     finally:
         await file.close()
-    return "success"
  
 
+@app.get('/about')
+def show_about():
 
+    def bash(command):
+        output = os.popen(command).read()
+        return output
+
+    return {
+        "sys.version": sys.version,
+        "torch.__version__": torch.__version__,
+        "torch.cuda.is_available()": torch.cuda.is_available(),
+        "torch.version.cuda": torch.version.cuda,
+        "torch.backends.cudnn.version()": torch.backends.cudnn.version(),
+        "torch.backends.cudnn.enabled": torch.backends.cudnn.enabled,
+        "nvidia-smi": bash('nvidia-smi')
+    }
     
