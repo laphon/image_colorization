@@ -14,7 +14,7 @@ import torchvision.transforms as T
 from PIL import Image
 import torchvision.transforms.functional as TF
 import aiofiles
-from typing import List
+import subprocess
 import os
 import io
 from starlette.responses import StreamingResponse,FileResponse
@@ -137,15 +137,13 @@ def compose (image):
 def get_image(path):
     return Image.open(path)
 
-def image_to_byte_array(image: Image) -> bytes:
-  img_byte_arr = io.BytesIO()
-  image.save(img_byte_arr, format="PNG")
-  img_byte_arr = img_byte_arr.getvalue()
-  return img_byte_arr
-
-@app.post("/file/")
+@app.post("/color/")
 async def read_root(file: UploadFile = File(...)):
     try:
+        command = '''ls imgs | grep -P "(.)*_col_(.)*" | awk '{print "./imgs/"$1}' | xargs -d "\n" rm'''
+        results = subprocess.run(command, shell=True, universal_newlines=True, check=True)
+        print(results)
+
         contents = await file.read()
         filename = os.path.abspath("./imgs/" + file.filename)
         with open(filename, 'wb') as f:
@@ -160,7 +158,6 @@ async def read_root(file: UploadFile = File(...)):
                 newFilename =  "".join(filename.split(".")[:-1]) + "_col_" + '.png'
                 reverted = revert_fn(converted[2][0], cpu_color[0][0], cpu_color[0][1]) 
                 save_image(reverted, newFilename)
-                # with open(newFilename, "wb") as nf:
                 return FileResponse(newFilename)
                 # return StreamingResponse(image_to_byte_array(T.ToPILImage()(reverted)), media_type="image/png")
                 # res, im_png = cv2.imencode(".png", reverted.cpu().numpy())
@@ -170,7 +167,34 @@ async def read_root(file: UploadFile = File(...)):
         return {"message": "There was an error uploading the file"}
     finally:
         await file.close()
- 
+
+@app.post("/gray_scale/")
+async def gray_scale(file: UploadFile = File(...)):
+    try:
+        command = '''ls imgs | grep -P "(.)*_col_(.)*" | awk '{print "./imgs/"$1}' | xargs -d "\n" rm'''
+        results = subprocess.run(command, shell=True, universal_newlines=True, check=True)
+        print(results)
+
+        contents = await file.read()
+        filename = os.path.abspath("./imgs/" + file.filename)
+        with open(filename, 'wb') as f:
+            with torch.no_grad():
+                f.write(contents)
+                img = compose(get_image(filename)) 
+                converted = img
+                gray_img = torch.stack([converted[0]]).to(device) 
+                global_features = extractor(gray_img).to(device)
+                color_outputs = model(gray_img, global_features)
+                cpu_color = color_outputs.cpu()
+                newFilename =  "".join(filename.split(".")[:-1]) + "_col_" + '.png'
+                reverted = revert_fn(converted[2][0], cpu_color[0][0], cpu_color[0][1]) 
+                save_image(reverted, newFilename)
+                return FileResponse(newFilename)
+    except Exception as e:
+        print(e)
+        return {"message": "There was an error uploading the file"}
+    finally:
+        await file.close()
 
 @app.get('/about')
 def show_about():
