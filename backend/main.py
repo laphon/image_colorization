@@ -17,10 +17,11 @@ import aiofiles
 from typing import List
 import os
 import io
-from starlette.responses import StreamingResponse
+from starlette.responses import StreamingResponse,FileResponse
 import sys
 from cv2 import cv2
 from torchvision.utils import save_image
+
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -136,6 +137,12 @@ def compose (image):
 def get_image(path):
     return Image.open(path)
 
+def image_to_byte_array(image: Image) -> bytes:
+  img_byte_arr = io.BytesIO()
+  image.save(img_byte_arr, format="PNG")
+  img_byte_arr = img_byte_arr.getvalue()
+  return img_byte_arr
+
 @app.post("/file/")
 async def read_root(file: UploadFile = File(...)):
     try:
@@ -145,17 +152,19 @@ async def read_root(file: UploadFile = File(...)):
             with torch.no_grad():
                 f.write(contents)
                 img = compose(get_image(filename)) 
-                gray_img = torch.stack([convert_fn(img)[0]]).to(device) 
+                converted = convert_fn(img)
+                gray_img = torch.stack([converted[0]]).to(device) 
                 global_features = extractor(gray_img).to(device)
-                # print(global_features.shape)
-                # print(gray_img.shape)
                 color_outputs = model(gray_img, global_features)
-                # print(color_outputs)
-                # return StreamingResponse(io.BytesIO(color_outputs.cpu().numpy().tobytes()), media_type="image/png")
-                # cv2.imwrite(color_outputs.cpu().numpy(), 'pic.png')
-                print(color_outputs)
-                save_image(color_outputs, 'color.png')
-                # return color_outputs.cpu().numpy()
+                cpu_color = color_outputs.cpu()
+                newFilename =  "".join(filename.split(".")[:-1]) + "_col_" + '.png'
+                reverted = revert_fn(converted[2][0], cpu_color[0][0], cpu_color[0][1]) 
+                save_image(reverted, newFilename)
+                # with open(newFilename, "wb") as nf:
+                return FileResponse(newFilename)
+                # return StreamingResponse(image_to_byte_array(T.ToPILImage()(reverted)), media_type="image/png")
+                # res, im_png = cv2.imencode(".png", reverted.cpu().numpy())
+                # return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type="image/png")
     except Exception as e:
         print(e)
         return {"message": "There was an error uploading the file"}
