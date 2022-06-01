@@ -171,25 +171,26 @@ async def read_root(file: UploadFile = File(...)):
 @app.post("/gray_scale/")
 async def gray_scale(file: UploadFile = File(...)):
     try:
-        command = '''ls imgs | grep -P "(.)*_col_(.)*" | awk '{print "./imgs/"$1}' | xargs -d "\n" rm'''
-        results = subprocess.run(command, shell=True, universal_newlines=True, check=True)
-        print(results)
+        # command = '''ls imgs | grep -P "(.)*_col_(.)*" | awk '{print "./imgs/"$1}' | xargs -d "\n" rm'''
+        # results = subprocess.run(command, shell=True, universal_newlines=True, check=True)
+        # print(results)
 
         contents = await file.read()
         filename = os.path.abspath("./imgs/" + file.filename)
         with open(filename, 'wb') as f:
-            with torch.no_grad():
-                f.write(contents)
-                img = compose(get_image(filename)) 
-                converted = img
-                gray_img = torch.stack([converted[0]]).to(device) 
-                global_features = extractor(gray_img).to(device)
-                color_outputs = model(gray_img, global_features)
-                cpu_color = color_outputs.cpu()
-                newFilename =  "".join(filename.split(".")[:-1]) + "_col_" + '.png'
-                reverted = revert_fn(converted[2][0], cpu_color[0][0], cpu_color[0][1]) 
-                save_image(reverted, newFilename)
-                return FileResponse(newFilename)
+            f.write(contents)
+            f.close()
+        with torch.no_grad():
+            img = compose(get_image(filename)) 
+            converted = img
+            gray_img = torch.stack([converted[0]]).to(device) 
+            global_features = extractor(gray_img).to(device)
+            color_outputs = model(gray_img, global_features)
+            cpu_color = color_outputs.cpu()
+            newFilename =  "".join(filename.split(".")[:-1]) + "_col_" + '.png'
+            reverted = revert_fn(converted[2][0], cpu_color[0][0], cpu_color[0][1]) 
+            save_image(reverted, newFilename)
+            return FileResponse(newFilename)
     except Exception as e:
         print(e)
         return {"message": "There was an error uploading the file"}
