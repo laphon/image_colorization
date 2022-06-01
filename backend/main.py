@@ -159,9 +159,6 @@ async def read_root(file: UploadFile = File(...)):
                 reverted = revert_fn(converted[2][0], cpu_color[0][0], cpu_color[0][1]) 
                 save_image(reverted, newFilename)
                 return FileResponse(newFilename)
-                # return StreamingResponse(image_to_byte_array(T.ToPILImage()(reverted)), media_type="image/png")
-                # res, im_png = cv2.imencode(".png", reverted.cpu().numpy())
-                # return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type="image/png")
     except Exception as e:
         print(e)
         return {"message": "There was an error uploading the file"}
