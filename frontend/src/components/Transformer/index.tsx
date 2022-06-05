@@ -4,10 +4,9 @@ import { HOST_NAME } from "../../constant";
 
 const colorImgApi = (img: File) => {
   try {
-    console.log(img);
+    console.log("img", img);
     const data = new FormData();
     data.append("file", img);
-    // data.append("name", newItem.name);
     fetch(`${HOST_NAME}/gray_scale`, {
       method: "POST",
       headers: {
