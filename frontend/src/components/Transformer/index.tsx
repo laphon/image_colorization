@@ -19,7 +19,7 @@ const UploadAndDisplayImage = ({setImage}: {setImage: (img: any) => void}) => {
         <input
           type="file"
           name="myImage"
-          className="p-2 rounded-full text-gray-800"
+          tw="p-2 rounded-full text-gray-800"
           onChange={(event: any) => {
             if (!event || !event.target) {
                console.log("There is an error while uploading file") 
@@ -67,14 +67,14 @@ const Index = () => {
     const [upload, setUpload] = useState<any>(null);
 
     return (
-        <div className="grid grid-cols-10">
-            <div className="col-span-9">
+        <div tw="grid grid-cols-10">
+            <div tw="col-span-2">
                 <UploadAndDisplayImage setImage={(img: any) => {
                     setUpload(img);
                     setCurSelect(-2);
                 }}/>
             </div>
-            <div className="col-span-1">
+            <div tw="col-span-8">
                <Carousel />
             </div> 
         </div>
