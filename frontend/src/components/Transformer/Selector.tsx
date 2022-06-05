@@ -18,7 +18,6 @@ const UploadAndDisplayImage = ({
           if (!event || !event.target) {
             console.log("There is an error while uploading file");
           }
-          console.log(event.target.files[0]);
           setSelectedImage(event.target.files[0]);
           setImage(event.target.files[0]);
         }}
@@ -66,13 +65,30 @@ const DEFAULT_URLS = [
   "https://api.lorem.space/image/game?w=256&h=400&hash=500B67FB",
 ];
 
-const Index = ({
-  imgUrl,
-  callApi,
-}: {
-  imgUrl: File | undefined;
-  callApi: (data: File) => void;
-}) => {
+const fetchToBlob = (url: string) => {
+  return fetch(url);
+};
+
+const blobUrlToFile = (blobUrl: string): Promise<File> =>
+  new Promise((resolve) => {
+    fetch(blobUrl)
+      .then((res) => {
+        res
+          .blob()
+          .then((blob) => {
+            // please change the file.extension with something more meaningful
+            // or create a utility function to parse from URL
+            const file = new File([blob], "file.extension", {
+              type: blob.type,
+            });
+            resolve(file);
+          })
+          .catch(console.log);
+      })
+      .catch(console.log);
+  });
+
+const Index = ({ callApi }: { callApi: (data: File) => void }) => {
   const [curSelect, setCurSelect] = useState(-2);
   const [upload, setUpload] = useState<File>();
   const [urls, setUrls] = useState(DEFAULT_URLS);
@@ -97,7 +113,10 @@ const Index = ({
         <Carousel
           curSelect={curSelect}
           urls={urls}
-          setCurSelect={setCurSelect}
+          setCurSelect={async (idx: number) => {
+            setCurSelect(idx);
+            callApi(await blobUrlToFile(urls[idx]));
+          }}
         />
       </div>
     </div>

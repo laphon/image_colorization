@@ -1,8 +1,9 @@
 import Selector from "./Selector";
 import { useEffect, useState } from "react";
 import { HOST_NAME } from "../../constant";
+import tw from "twin.macro";
 
-const colorImgApi = (img: File) => {
+const colorImgApi = async (img: File) => {
   try {
     console.log("img", img);
     const data = new FormData();
@@ -15,7 +16,7 @@ const colorImgApi = (img: File) => {
       body: data,
     })
       .then((response) => {
-        console.log(response);
+        console.log("res", response);
       })
       .catch((err) => {
         console.log(err);
@@ -67,7 +68,7 @@ const Index = () => {
     <section>
       <div>
         <BothImage src={srcUrl} dest={destUrl} />
-        <Selector imgUrl={srcDat} callApi={(url) => setSrcDat(url)} />
+        <Selector callApi={(url) => setSrcDat(url)} />
         <Button text={"Colorize!"} />
       </div>
     </section>
