@@ -14,9 +14,11 @@
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
     "@headlessui/react": "^1.6.4",
+    "daisyui": "^2.15.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-image-crop": "^10.0.2"
+    "react-image-crop": "^10.0.2",
+    "react-upload-gallery": "^0.4.1"
   },
   "devDependencies": {
     "@emotion/babel-plugin-jsx-pragmatic": "^0.1.5",
