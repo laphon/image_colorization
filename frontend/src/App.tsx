@@ -18,7 +18,9 @@ const App = () => (
     <span tw="text-xl">
       Color grayscale images with our Deep Image Colorizer!
     </span>
-    <div tw="h-10"></div>
+      <Transfomer />
+    <div tw="h-10">
+    </div>
     <span tw="text-xl">
       How does it work?
     </span>
