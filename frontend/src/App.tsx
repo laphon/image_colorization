@@ -1,6 +1,7 @@
 import React from 'react'
 import tw from 'twin.macro'
 import { Button, Logo } from './components'
+import Transfomer from './components/Transformer'
 
 const styles = {
   // Move long class sets out of jsx to keep it scannable
@@ -12,6 +13,7 @@ const styles = {
 
 const App = () => (
   <div css={styles.container({ hasBackground: true })}>
+    <Transfomer />
     <div tw="flex flex-col justify-center h-full gap-y-5">
       <Button variant="primary">Submit</Button>
       <Button variant="secondary">Cancel</Button>
