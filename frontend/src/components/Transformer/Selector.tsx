@@ -10,20 +10,6 @@ const UploadAndDisplayImage = ({
 
   return (
     <div tw="flex h-full justify-center items-center">
-      {/* {selectedImage && (
-        <div>
-          <img
-            alt="not fount"
-            width={"250px"}
-            src={URL.createObjectURL(selectedImage)}
-          />
-          <br />
-          <button onClick={() => setSelectedImage(null)}>Remove</button>
-        </div>
-      )} */}
-      <br />
-
-      <br />
       <input
         type="file"
         name="myImage"
@@ -80,9 +66,15 @@ const DEFAULT_URLS = [
   "https://api.lorem.space/image/game?w=256&h=400&hash=500B67FB",
 ];
 
-const Index = () => {
+const Index = ({
+  imgUrl,
+  callApi,
+}: {
+  imgUrl: File | undefined;
+  callApi: (data: File) => void;
+}) => {
   const [curSelect, setCurSelect] = useState(-2);
-  const [upload, setUpload] = useState<any>(null);
+  const [upload, setUpload] = useState<File>();
   const [urls, setUrls] = useState(DEFAULT_URLS);
 
   useEffect(() => {
@@ -92,24 +84,31 @@ const Index = () => {
   }, [upload]);
 
   return (
-    <div tw="grid grid-cols-10">
-      <div tw="col-span-2">
-        <UploadAndDisplayImage
-          setImage={(img: any) => {
-            setUpload(img);
-            setCurSelect(-2);
-          }}
-        />
+    <div>
+      <div tw="flex justify-center py-2">
+        {imgUrl && <img src={URL.createObjectURL(imgUrl)} />}
       </div>
-      <div tw="col-span-8">
-        <Carousel
-          curSelect={curSelect}
-          urls={urls}
-          setCurSelect={setCurSelect}
-        />
+      <div tw="grid grid-cols-10">
+        <div tw="col-span-2">
+          <UploadAndDisplayImage
+            setImage={(img: any) => {
+              setUpload(img);
+              setCurSelect(-2);
+            }}
+          />
+        </div>
+        <div tw="col-span-8">
+          <Carousel
+            curSelect={curSelect}
+            urls={urls}
+            setCurSelect={setCurSelect}
+          />
+        </div>
       </div>
-      <div>
-        <button>Colorized!</button>
+      <div tw="flex justify-center" onClick={() => upload && callApi(upload)}>
+        <button tw="text-lg bg-pink-400 text-yellow-200 p-2 border-black border rounded-md font-semibold">
+          Colorized!
+        </button>
       </div>
     </div>
   );

@@ -17,13 +17,16 @@ import aiofiles
 import subprocess
 import os
 import io
-from starlette.responses import StreamingResponse,FileResponse
+from starlette.responses import FileResponse
 import sys
 from cv2 import cv2
 from torchvision.utils import save_image
+from fastapi.middleware.cors import CORSMiddleware
 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
 
 def rgb2hsv(img):
     img_original = img.numpy().transpose((1, 2, 0))
@@ -66,6 +69,15 @@ convert_fn = rgb2lab
 revert_fn = lab2rgb
 
 app = FastAPI()
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ExtractorResnet152(nn.Module):
     def __init__(self):
