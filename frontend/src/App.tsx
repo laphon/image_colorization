@@ -1,6 +1,7 @@
 import React from 'react'
 import tw from 'twin.macro'
 import { Title } from './components'
+import Transfomer from './components/Transformer'
 
 const styles = {
   // Move long class sets out of jsx to keep it scannable
