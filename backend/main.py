@@ -179,7 +179,7 @@ async def gray_scale(file: UploadFile = File(...)):
             f.close()
         with torch.no_grad():
             img = compose(get_image(filename)) 
-            converted = img
+            converted = convert_fn(img)
             gray_img = torch.stack([converted[0]]).to(device) 
             global_features = extractor(gray_img).to(device)
             color_outputs = model(gray_img, global_features)
