@@ -84,31 +84,21 @@ const Index = ({
   }, [upload]);
 
   return (
-    <div>
-      <div tw="flex justify-center py-2">
-        {imgUrl && <img src={URL.createObjectURL(imgUrl)} />}
+    <div tw="grid grid-cols-10">
+      <div tw="col-span-2">
+        <UploadAndDisplayImage
+          setImage={(img: any) => {
+            setUpload(img);
+            setCurSelect(-2);
+          }}
+        />
       </div>
-      <div tw="grid grid-cols-10">
-        <div tw="col-span-2">
-          <UploadAndDisplayImage
-            setImage={(img: any) => {
-              setUpload(img);
-              setCurSelect(-2);
-            }}
-          />
-        </div>
-        <div tw="col-span-8">
-          <Carousel
-            curSelect={curSelect}
-            urls={urls}
-            setCurSelect={setCurSelect}
-          />
-        </div>
-      </div>
-      <div tw="flex justify-center" onClick={() => upload && callApi(upload)}>
-        <button tw="text-lg bg-pink-400 text-yellow-200 p-2 border-black border rounded-md font-semibold">
-          Colorized!
-        </button>
+      <div tw="col-span-8">
+        <Carousel
+          curSelect={curSelect}
+          urls={urls}
+          setCurSelect={setCurSelect}
+        />
       </div>
     </div>
   );
