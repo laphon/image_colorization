@@ -49,7 +49,7 @@ const Carousel = ({
   return (
     <div tw="flex space-x-2">
       {urls.map((url, i) => (
-        <div key={i} onClick={() => setCurSelect(i)}>
+        <div key={i} onClick={() => setCurSelect(i)} tw="flex items-center">
           <Image src={url} selected={i === curSelect} />
         </div>
       ))}
@@ -71,13 +71,33 @@ const fetchToBlob = (url: string) => {
 
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
   new Promise((resolve) => {
-    fetch(blobUrl)
+    fetch(blobUrl, {
+      headers: {
+        accept:
+          "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        "accept-language": "en,th-TH;q=0.9,th;q=0.8",
+        "cache-control": "no-cache",
+        pragma: "no-cache",
+        "sec-ch-ua":
+          '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+        "sec-fetch-dest": "image",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "cross-site",
+      },
+      referrer: "http://localhost:3000/",
+      referrerPolicy: "strict-origin-when-cross-origin",
+      body: null,
+      method: "GET",
+      mode: "cors",
+      credentials: "omit",
+    })
       .then((res) => {
+        console.log("ress ", res);
         res
           .blob()
           .then((blob) => {
-            // please change the file.extension with something more meaningful
-            // or create a utility function to parse from URL
             const file = new File([blob], "file.extension", {
               type: blob.type,
             });
