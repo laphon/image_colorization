@@ -180,9 +180,6 @@ async def read_root(file: UploadFile = File(...)):
 @app.post("/gray_scale/")
 async def gray_scale(file: UploadFile = File(...)):
     try:
-        # command = '''ls imgs | grep -P "(.)*_col_(.)*" | awk '{print "./imgs/"$1}' | xargs -d "\n" rm'''
-        # results = subprocess.run(command, shell=True, universal_newlines=True, check=True)
-        # print(results)
 
         contents = await file.read()
         filename = os.path.abspath("./imgs/" + file.filename)
@@ -190,7 +187,8 @@ async def gray_scale(file: UploadFile = File(...)):
             f.write(contents)
             f.close()
         with torch.no_grad():
-            img = compose(get_image(filename)) 
+            img = compose(get_image(filename))
+            print(img.shape) 
             converted = convert_fn(img)
             gray_img = torch.stack([converted[0]]).to(device) 
             global_features = extractor(gray_img).to(device)

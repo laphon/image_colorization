@@ -2,6 +2,7 @@ import Selector from "./Selector";
 import { useEffect, useState } from "react";
 import { HOST_NAME } from "../../constant";
 import tw from "twin.macro";
+import Loading from "../Loading";
 
 const colorImgApi = async (img: File, setDestImg: (img: File) => void) => {
   try {
@@ -16,7 +17,6 @@ const colorImgApi = async (img: File, setDestImg: (img: File) => void) => {
       body: data,
     })
       .then((res) => {
-        console.log("ress ", res);
         res
           .blob()
           .then((blob) => {
@@ -74,6 +74,7 @@ const BothImage = ({ src, dest }: { src: string; dest: string }) => {
 const Index = () => {
   const [srcDat, setSrcDat] = useState<File>();
   const [destImg, setDestImg] = useState<File>();
+  const [isLoading, setIsLoading] = useState(false);
 
   let srcUrl = "";
   let destUrl = "";
@@ -87,11 +88,19 @@ const Index = () => {
     <section>
       <div tw="space-y-4 my-4">
         <BothImage src={srcUrl} dest={destUrl} />
-        <Selector callApi={(url) => setSrcDat(url)} />
+        <div tw="flex justify-center">{isLoading && <Loading />}</div>
+        <Selector
+          callApi={(url) => {
+            setIsLoading(true);
+            setSrcDat(url);
+          }}
+        />
         <Button
           text={"Colorize!"}
-          onClick={() => {
-            srcDat && colorImgApi(srcDat, setDestImg);
+          onClick={async () => {
+            setIsLoading(true);
+            srcDat && (await colorImgApi(srcDat, setDestImg));
+            setIsLoading(false);
           }}
         />
       </div>

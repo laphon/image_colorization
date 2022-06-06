@@ -67,10 +67,6 @@ const DEFAULT_URLS = [
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/snowy-mountain-gray-srgb.jpg",
 ];
 
-const fetchToBlob = (url: string) => {
-  return fetch(url);
-};
-
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
   new Promise((resolve) => {
     fetch(`https://chess-knowing-p-jill.trycloudflare.com/${blobUrl}`, {
@@ -96,7 +92,6 @@ const blobUrlToFile = (blobUrl: string): Promise<File> =>
       credentials: "omit",
     })
       .then((res) => {
-        console.log("ress ", res);
         res
           .blob()
           .then((blob) => {
