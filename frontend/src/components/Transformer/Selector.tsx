@@ -141,6 +141,7 @@ const Index = ({ callApi }: { callApi: (data: File) => void }) => {
             callApi(await blobUrlToFile(urls[idx]));
           }}
         />
+        <div>grayscale out of sample images</div>
       </div>
     </div>
   );
