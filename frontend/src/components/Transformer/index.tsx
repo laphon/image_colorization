@@ -9,26 +9,21 @@ const colorImgApi = async (img: File, setDestImg: (img: File) => void) => {
     console.log("img", img);
     const data = new FormData();
     data.append("file", img);
-    fetch(`${HOST_NAME}/gray_scale`, {
+    const ob = await fetch(`${HOST_NAME}/gray_scale`, {
       method: "POST",
       headers: {
         Accept: "application/json",
       },
       body: data,
-    })
-      .then((res) => {
-        res
-          .blob()
-          .then((blob) => {
-            const file = new File([blob], "file.png", {
-              type: blob.type,
-            });
-            setDestImg(file);
-          })
-          .catch(console.log);
-      })
-      .catch(console.log);
-  } catch (err) {}
+    });
+    const blob = await ob.blob();
+    const file = new File([blob], "file.png", {
+      type: blob.type,
+    });
+    setDestImg(file);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
@@ -91,7 +86,6 @@ const Index = () => {
         <div tw="flex justify-center">{isLoading && <Loading />}</div>
         <Selector
           callApi={(url) => {
-            setIsLoading(true);
             setSrcDat(url);
           }}
         />
@@ -99,7 +93,9 @@ const Index = () => {
           text={"Colorize!"}
           onClick={async () => {
             setIsLoading(true);
-            srcDat && (await colorImgApi(srcDat, setDestImg));
+            if (srcDat) {
+              await colorImgApi(srcDat, setDestImg);
+            }
             setIsLoading(false);
           }}
         />

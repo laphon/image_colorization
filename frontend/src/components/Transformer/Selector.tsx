@@ -60,7 +60,6 @@ const Carousel = ({
 
 const DEFAULT_URLS = [
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/0_00n2nQhl4-pWH59J.jpg",
-  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/CloudyGoldenGate_grayscale.jpg",
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/grayscale-photography-shooting.jpg",
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_02.jpg",
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_04.jpg",
@@ -69,7 +68,12 @@ const DEFAULT_URLS = [
 
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
   new Promise((resolve) => {
-    fetch(`https://chess-knowing-p-jill.trycloudflare.com/${blobUrl}`, {
+    const localHostReg = new RegExp("localhost");
+    let url = `https://chess-knowing-p-jill.trycloudflare.com/${blobUrl}`;
+    if (localHostReg.test(url)) {
+      url = blobUrl;
+    }
+    fetch(url, {
       headers: {
         accept:
           "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
