@@ -32,6 +32,7 @@ const Image = ({ selected, src }: { selected: boolean; src: string }) => (
       tw`border`,
       selected && tw`border-green-600 border-4`,
       tw`rounded-xl`,
+      tw`w-72 h-48 object-cover`,
     ]}
     src={src}
   />
@@ -58,11 +59,13 @@ const Carousel = ({
 };
 
 const DEFAULT_URLS = [
-  "https://api.lorem.space/image/game?w=256&h=400&hash=7F5AE56A",
-  "https://api.lorem.space/image/game?w=256&h=400&hash=225E6693",
-  "https://api.lorem.space/image/game?w=256&h=400&hash=8B7BCDC2",
-  "https://api.lorem.space/image/game?w=256&h=400&hash=A89D0DE6",
-  "https://api.lorem.space/image/game?w=256&h=400&hash=500B67FB",
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/0_00n2nQhl4-pWH59J.jpg",
+  "https://github.com/laphon/image_colorization/blob/main/images/grays/1_XVP8KD24MdJIfQnAbTrSsA.png?raw=true",
+  "https://github.com/laphon/image_colorization/blob/main/images/grays/CloudyGoldenGate_grayscale.jpg?raw=true",
+  "https://github.com/laphon/image_colorization/blob/main/images/grays/grayscale-photography-shooting.jpg?raw=true",
+  "https://github.com/laphon/image_colorization/blob/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_02.jpg?raw=true",
+  "https://github.com/laphon/image_colorization/blob/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_04.jpg?raw=true",
+  "https://github.com/laphon/image_colorization/blob/main/images/grays/snowy-mountain-gray-srgb.jpg?raw=true",
 ];
 
 const fetchToBlob = (url: string) => {

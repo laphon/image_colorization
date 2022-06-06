@@ -42,6 +42,10 @@ const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
 };
 
 const BothImage = ({ src, dest }: { src: string; dest: string }) => {
+  if (src == "" || dest == "") {
+    return null;
+  }
+
   return (
     <div tw="flex justify-center">
       <div tw="flex justify-between w-3/5 items-center">
