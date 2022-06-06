@@ -41,6 +41,15 @@ const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
   );
 };
 
+const Image = ({ url }: { url: string }) => {
+  return (
+    <img
+      css={[tw`border`, tw`rounded-xl`, tw`w-72 h-48 object-cover`]}
+      src={url}
+    />
+  );
+};
+
 const BothImage = ({ src, dest }: { src: string; dest: string }) => {
   if (src == "" || dest == "") {
     return null;
@@ -50,11 +59,11 @@ const BothImage = ({ src, dest }: { src: string; dest: string }) => {
     <div tw="flex justify-center">
       <div tw="flex justify-between w-3/5 items-center">
         <div>
-          <img src={src} />
+          <Image url={src} />
           <h2 tw="text-center text-lg font-semibold">Original</h2>
         </div>
         <div>
-          <img src={dest} />
+          <Image url={dest} />
           <h2 tw="text-center text-lg font-semibold">Colorized</h2>
         </div>
       </div>

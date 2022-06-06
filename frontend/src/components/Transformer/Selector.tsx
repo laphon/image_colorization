@@ -60,12 +60,11 @@ const Carousel = ({
 
 const DEFAULT_URLS = [
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/0_00n2nQhl4-pWH59J.jpg",
-  "https://github.com/laphon/image_colorization/blob/main/images/grays/1_XVP8KD24MdJIfQnAbTrSsA.png?raw=true",
-  "https://github.com/laphon/image_colorization/blob/main/images/grays/CloudyGoldenGate_grayscale.jpg?raw=true",
-  "https://github.com/laphon/image_colorization/blob/main/images/grays/grayscale-photography-shooting.jpg?raw=true",
-  "https://github.com/laphon/image_colorization/blob/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_02.jpg?raw=true",
-  "https://github.com/laphon/image_colorization/blob/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_04.jpg?raw=true",
-  "https://github.com/laphon/image_colorization/blob/main/images/grays/snowy-mountain-gray-srgb.jpg?raw=true",
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/CloudyGoldenGate_grayscale.jpg",
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/grayscale-photography-shooting.jpg",
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_02.jpg",
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_04.jpg",
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/snowy-mountain-gray-srgb.jpg",
 ];
 
 const fetchToBlob = (url: string) => {
@@ -74,7 +73,7 @@ const fetchToBlob = (url: string) => {
 
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
   new Promise((resolve) => {
-    fetch(blobUrl, {
+    fetch(`https://chess-knowing-p-jill.trycloudflare.com/${blobUrl}`, {
       headers: {
         accept:
           "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
