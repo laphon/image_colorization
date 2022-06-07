@@ -121,8 +121,8 @@ const Index = ({ callApi }: { callApi: (data: File) => void }) => {
   }, [upload]);
 
   return (
-    <div tw="grid grid-cols-10">
-      <div tw="col-span-2">
+    <div tw="">
+      <div tw="col-span-2 mb-8">
         <UploadAndDisplayImage
           setImage={(img: any) => {
             setUpload(img);
@@ -130,7 +130,7 @@ const Index = ({ callApi }: { callApi: (data: File) => void }) => {
           }}
         />
       </div>
-      <div tw="col-span-8">
+      <div tw="col-span-8 mx-24 mb-8">
         <Carousel
           curSelect={curSelect}
           urls={urls}
@@ -139,7 +139,6 @@ const Index = ({ callApi }: { callApi: (data: File) => void }) => {
             callApi(await blobUrlToFile(urls[idx]));
           }}
         />
-        <div>grayscale out of sample images</div>
       </div>
     </div>
   );
