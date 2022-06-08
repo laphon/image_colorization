@@ -63,6 +63,7 @@ const DEFAULT_URLS = [
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/grayscale-photography-shooting.jpg",
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_02.jpg",
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_04.jpg",
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/bruh.png"
 ];
 
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
