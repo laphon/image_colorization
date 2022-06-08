@@ -1,5 +1,5 @@
 import Selector from "./Selector";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { HOST_NAME } from "../../constant";
 import tw from "twin.macro";
 import Loading from "../Loading";
@@ -39,7 +39,7 @@ const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
 const Image = ({ url }: { url: string }) => {
   return (
     <img
-      css={[tw`border`, tw`rounded-xl`, tw`w-72 h-48 object-cover`]}
+      css={[tw`border`, tw`rounded-xl`, tw`object-cover` ]}
       src={url}
     />
   );
@@ -51,9 +51,9 @@ const BothImage = ({ src, dest }: { src: string; dest: string }) => {
   }
 
   return (
-    <div tw="flex justify-center">
+    <div tw="flex justify-center items-center">
       <div tw="flex justify-between w-3/5 items-center">
-        <div>
+        <div tw="w-72">
           <Image url={src} />
           <h2 tw="text-center text-lg font-semibold">Original</h2>
         </div>
