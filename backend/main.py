@@ -238,7 +238,7 @@ base_models = {
 model_name = "efficientnet_b0"
 extractor = ExtractorEfficientNet(base_model=base_models["efficientnet_b1"]())
 model = ColorNetEfficientNet(base_model=base_models[model_name](), global_output_size=extractor(torch.zeros((1, 1, 256, 256))).shape[1])
-model.load_state_dict(torch.load('efficientnet_b0_2022-05-25_11:10:27:326809.pth'))
+model.load_state_dict(torch.load('efficientnet_b0_2022-05-25_11:10:27:326809.pth', map_location=torch.device('cpu')))
 extractor.to(device)
 model.to(device)
 
