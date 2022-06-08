@@ -147,7 +147,11 @@ def compose (image):
     ])(image)
 
 def get_image(path):
-    return Image.open(path)
+    image = Image.open(path)
+    print(image.mode)
+    if (image.mode != "RGB"):
+        image = image.convert("RGB")
+    return image
 
 @app.post("/color/")
 async def read_root(file: UploadFile = File(...)):
@@ -188,7 +192,7 @@ async def gray_scale(file: UploadFile = File(...)):
             f.close()
         with torch.no_grad():
             img = compose(get_image(filename))
-            print(img.shape) 
+            # print(img.shape) 
             converted = convert_fn(img)
             gray_img = torch.stack([converted[0]]).to(device) 
             global_features = extractor(gray_img).to(device)
