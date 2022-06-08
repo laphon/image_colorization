@@ -97,7 +97,6 @@ const Loading = () => {
 const LoadingAni = () => {
   return (
     <svg id="wrap" width={300} height={300}>
-      {/* background */}
       <svg>
         <circle
           cx={150}
@@ -124,7 +123,6 @@ const LoadingAni = () => {
           />
         </path>
       </svg>
-      {/* image */}
       <svg>
         <path
           id="hourglass"
@@ -161,9 +159,7 @@ const LoadingAni = () => {
           repeatCount="indefinite"
         />
       </svg>
-      {/* sand */}
       <svg>
-        {/* upper part */}
         <polygon
           id="upper"
           points="120,125 180,125 150,147"
@@ -177,7 +173,6 @@ const LoadingAni = () => {
             repeatCount="indefinite"
           />
         </polygon>
-        {/* falling sand */}
         <path
           id="line"
           strokeLinecap="round"
@@ -187,14 +182,12 @@ const LoadingAni = () => {
           strokeWidth={2}
           d="M150,150 L150,198"
         >
-          {/* running sand */}
           <animate
             attributeName="stroke-dashoffset"
             dur="3s"
             to={1.0}
             repeatCount="indefinite"
           />
-          {/* emptied upper */}
           <animate
             attributeName="d"
             dur="3s"
@@ -203,7 +196,6 @@ const LoadingAni = () => {
             keyTimes="0; 0.65; 0.9; 1"
             repeatCount="indefinite"
           />
-          {/* last drop */}
           <animate
             attributeName="stroke"
             dur="3s"
@@ -213,7 +205,6 @@ const LoadingAni = () => {
             repeatCount="indefinite"
           />
         </path>
-        {/* lower part */}
         <g id="lower">
           <path
             d="M150,180 L180,190 A28,10 0 1,1 120,190 L150,180 Z"
@@ -239,7 +230,6 @@ const LoadingAni = () => {
             repeatCount="indefinite"
           />
         </g>
-        {/* lower overlay - hourglass */}
         <path
           d="M150,150 C60,85 240,85 150,150 C60,215 240,215 150,150 Z"
           style={{ stroke: "white", strokeWidth: 5, fill: "transparent" }}
@@ -254,7 +244,6 @@ const LoadingAni = () => {
             repeatCount="indefinite"
           />
         </path>
-        {/* lower overlay - frame */}
         <path
           id="frame"
           d="M100,97 L200, 97 M100,203 L200,203"
