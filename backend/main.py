@@ -136,7 +136,7 @@ extractors = {
 model_name = "resnet18"
 extractor = ExtractorResnet152()
 model = models[model_name](mid_input_size=extractor(torch.zeros((1, 1, 256, 256))).shape[1])
-model.load_state_dict(torch.load('../models/resnet18_lab_2022-05-22_15:43:40:003835.pth'))
+model.load_state_dict(torch.load('./resnet18_lab_2022-05-22_15:43:40:003835.pth'))
 extractor.to(device)
 model.to(device)
 
