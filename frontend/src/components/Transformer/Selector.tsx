@@ -89,7 +89,7 @@ const blobUrlToFile = (blobUrl: string): Promise<File> =>
         "sec-fetch-mode": "no-cors",
         "sec-fetch-site": "cross-site",
       },
-      referrer: "https://colorlized.vercel.app/",
+      referrer: window.location.hostname,
       referrerPolicy: "strict-origin-when-cross-origin",
       body: null,
       method: "GET",
