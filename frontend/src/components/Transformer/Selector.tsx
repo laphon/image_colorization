@@ -64,7 +64,7 @@ const DEFAULT_URLS = [
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/grayscale-photography-shooting.jpg",
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_02.jpg",
   "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/id_Grayscale_vs_Black_White_vs_Monochrome_04.jpg",
-  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/bruh.png"
+  "https://raw.githubusercontent.com/laphon/image_colorization/main/images/grays/bruh.png",
 ];
 
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
@@ -89,7 +89,7 @@ const blobUrlToFile = (blobUrl: string): Promise<File> =>
         "sec-fetch-mode": "no-cors",
         "sec-fetch-site": "cross-site",
       },
-      referrer: "http://localhost:3000/",
+      referrer: "https://colorlized.vercel.app/",
       referrerPolicy: "strict-origin-when-cross-origin",
       body: null,
       method: "GET",
