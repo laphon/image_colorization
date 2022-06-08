@@ -288,6 +288,7 @@ async def gray_scale(file: UploadFile = File(...)):
 
         contents = await file.read()
         filename = os.path.abspath("/tmp/imgs/" + file.filename)
+        print('filename ', filename)
         with open(filename, 'wb') as f:
             f.write(contents)
             f.close()
