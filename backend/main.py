@@ -22,6 +22,8 @@ import sys
 from cv2 import cv2
 from torchvision.utils import save_image
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
+
 
 
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -287,7 +289,10 @@ async def gray_scale(file: UploadFile = File(...)):
     try:
 
         contents = await file.read()
-        filename = "/tmp/imgs/" + file.filename
+        # filename = os.path.abspath("/tmp/imgs/" + file.filename)
+        prefix_path = "/tmp/imgs"
+        Path(prefix_path).mkdir(parents=True, exist_ok=True)
+        filename = prefix_path + file.filename
         print('filename ', filename)
         with open(filename, 'wb') as f:
             f.write(contents)
@@ -301,6 +306,7 @@ async def gray_scale(file: UploadFile = File(...)):
             color_outputs = model(gray_img, global_features)
             cpu_color = color_outputs.cpu()
             newFilename =  "".join(filename.split(".")[:-1]) + "_col_" + '.png'
+            print("new filename: " + newFilename)
             reverted = revert_fn(converted[2][0], cpu_color[0][0], cpu_color[0][1]) 
             save_image(reverted, newFilename)
             return FileResponse(newFilename)
