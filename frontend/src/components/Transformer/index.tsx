@@ -29,7 +29,7 @@ const colorImgApi = async (img: File, setDestImg: (img: File) => void) => {
 const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
   return (
     <div tw="flex justify-center" onClick={onClick}>
-      <button tw="text-lg bg-pink-400 text-yellow-200 p-2 border-black border rounded-md font-semibold">
+      <button tw="text-lg bg-pink-400 text-white py-2 px-4 border rounded-md font-semibold">
         {text}
       </button>
     </div>
