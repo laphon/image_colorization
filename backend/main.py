@@ -24,8 +24,8 @@ from torchvision.utils import save_image
 from fastapi.middleware.cors import CORSMiddleware
 
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 
 
 def rgb2hsv(img):
@@ -250,7 +250,6 @@ def compose (image):
 
 def get_image(path):
     image = Image.open(path)
-    print(image.mode)
     if (image.mode != "RGB"):
         image = image.convert("RGB")
     return image
