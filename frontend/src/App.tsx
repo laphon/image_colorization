@@ -67,7 +67,9 @@ const App = () => (
         </a>.
       </span>
 
-      <img src={diagram} alt="Diagram" tw="mt-8 w-3/5"/>
+      <div tw="flex justify-center">
+        <img src={diagram} alt="Diagram" tw="mt-8 w-3/5"/>
+      </div>
 
       <br></br><br></br>
       <span css={headers.container()}>
@@ -89,14 +91,17 @@ const App = () => (
         Plot of Training and Validation Losses
       </span><br></br>
 
-      <img src={plot} alt="Plot" tw="mt-4 w-1/2"/>
-
+      <div tw="flex justify-center">
+        <img src={plot} alt="Plot" tw="mt-4 w-1/2"/>
+      </div>
       <br></br>
       <span css={headers.container()}>
         Qualitative Evaluation on Testing Images
       </span><br></br>
 
-      <img src={images} alt="Images" tw="mt-4 w-3/5"/>
+      <div tw="flex justify-center">
+        <img src={images} alt="Images" tw="mt-4 w-3/5"/>
+      </div>
 
       <br></br>
       <span css={headers.container()}>
