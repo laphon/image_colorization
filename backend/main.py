@@ -79,6 +79,106 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# global feature extractor based on Resnet
+class ExtractorResnet(nn.Module):
+    def __init__(self, base_model):
+        super(ExtractorResnet, self).__init__()
+        base_model.conv1.weight = nn.Parameter(base_model.conv1.weight.sum(dim=1).unsqueeze(1))
+        self.encoder = nn.Sequential(
+            *list(base_model.children())[0:6]
+        )
+
+    def forward(self, x):
+        x = self.encoder(x)
+        return x
+
+# global feature extractor based on EfficientNet
+class ExtractorEfficientNet(nn.Module):
+    def __init__(self, base_model):
+        super(ExtractorEfficientNet, self).__init__()
+        base_model.features[0][0].weight = nn.Parameter(base_model.features[0][0].weight.sum(dim=1).unsqueeze(1))
+        self.encoder = nn.Sequential(*list(base_model.children())[0][0:4])
+
+    def forward(self, x):
+        x = self.encoder(x)
+        return x
+
+# auto encoder decoder based on Resnet
+class ColorNetResnet(nn.Module):
+
+    def __init__(self, base_model, global_output_size=0):
+        super(ColorNetResnet, self).__init__()
+        self.global_output_size = global_output_size
+        base_model.conv1.weight = nn.Parameter(base_model.conv1.weight.sum(dim=1).unsqueeze(1))
+        self.encoder = nn.Sequential(*list(base_model.children())[0:6])
+        encoder_output_size = self.encoder(torch.zeros((1, 1, 256, 256))).shape[1]
+        self.decoder = nn.Sequential(     
+            nn.Conv2d(global_output_size + encoder_output_size, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(64, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.Conv2d(32, 2, kernel_size=3, stride=1, padding=1),
+            nn.Upsample(scale_factor=2)
+        )
+
+    def forward(self, x, in_=None):
+        x = self.encoder(x)
+        if self.global_output_size > 0:
+            x = torch.cat([x, in_], dim=1)
+        x = self.decoder(x)
+        return x
+
+# auto encoder decoder based on EfficientNet
+class ColorNetEfficientNet(nn.Module):
+
+    def __init__(self, base_model, global_output_size=0):
+        super(ColorNetEfficientNet, self).__init__()
+        self.global_output_size = global_output_size
+        base_model.features[0][0].weight = nn.Parameter(base_model.features[0][0].weight.sum(dim=1).unsqueeze(1))
+        self.encoder = nn.Sequential(*list(base_model.children())[0][0:4])
+        encoder_output_size = self.encoder(torch.zeros((1, 1, 256, 256))).shape[1]
+        self.decoder = nn.Sequential(     
+            nn.Conv2d(global_output_size + encoder_output_size, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(64, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.ReLU(),
+            nn.Conv2d(32, 2, kernel_size=3, stride=1, padding=1),
+            nn.Upsample(scale_factor=2)
+        )
+
+    def forward(self, x, in_=None):
+        x = self.encoder(x)
+        if self.global_output_size > 0:
+            x = torch.cat([x, in_], dim=1)
+        x = self.decoder(x)
+        return x
+
 class ExtractorResnet152(nn.Module):
     def __init__(self):
         super(ExtractorResnet152, self).__init__()
@@ -127,16 +227,18 @@ class ColorNetResnet18(nn.Module):
         x = self.decoder(x)
         return x
 
-models = {
-    "resnet18": ColorNetResnet18
+
+base_models = {
+    "resnet18": torchvision.models.resnet18,
+    "resnet50": torchvision.models.resnet50,
+    "resnet152": torchvision.models.resnet152,
+    "efficientnet_b0": torchvision.models.efficientnet_b0,
+    "efficientnet_b1": torchvision.models.efficientnet_b1
 }
-extractors = {
-    "resnet152": ExtractorResnet152
-}
-model_name = "resnet18"
-extractor = ExtractorResnet152()
-model = models[model_name](mid_input_size=extractor(torch.zeros((1, 1, 256, 256))).shape[1])
-model.load_state_dict(torch.load('./resnet18_2022-05-22_15:43:40:003835.pth'))
+model_name = "efficientnet_b0"
+extractor = ExtractorEfficientNet(base_model=base_models["efficientnet_b1"]())
+model = ColorNetEfficientNet(base_model=base_models[model_name](), global_output_size=extractor(torch.zeros((1, 1, 256, 256))).shape[1])
+model.load_state_dict(torch.load('efficientnet_b0_2022-05-25_11:10:27:326809.pth'))
 extractor.to(device)
 model.to(device)
 
