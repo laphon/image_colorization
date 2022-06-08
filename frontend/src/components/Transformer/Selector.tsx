@@ -1,5 +1,6 @@
 import tw, { css } from "twin.macro";
 import { useEffect, useState } from "react";
+import { PROXY_HOST } from "../../constant";
 
 const UploadAndDisplayImage = ({
   setImage,
@@ -69,7 +70,7 @@ const DEFAULT_URLS = [
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
   new Promise((resolve) => {
     const localHostReg = new RegExp("localhost");
-    let url = `https://chess-knowing-p-jill.trycloudflare.com/${blobUrl}`;
+    let url = `${PROXY_HOST}/${blobUrl}`;
     if (localHostReg.test(url)) {
       url = blobUrl;
     }
