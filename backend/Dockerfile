@@ -3,5 +3,5 @@ ENV APP_HOME .
 WORKDIR $APP_HOME
 COPY . ./
 RUN pip install pipenv
-RUN pipenv sync
-CMD exec gunicorn --bind :$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker  --threads 8 app.main:app%
+RUN pip install -r requirements.txt
+CMD exec gunicorn --bind :$PORT --workers 1 --worker-class uvicorn.workers.UvicornWorker  --threads 8 app.main:app
