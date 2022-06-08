@@ -220,4 +220,7 @@ def show_about():
         "torch.backends.cudnn.enabled": torch.backends.cudnn.enabled,
         "nvidia-smi": bash('nvidia-smi')
     }
-    
+
+@app.get('/ping')
+def ping_pong():
+    return "poing" 
