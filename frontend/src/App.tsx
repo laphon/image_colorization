@@ -23,7 +23,7 @@ const headers = {
 
 const App = () => (
   <div css={styles.container({ hasBackground: false })}>
-    <Title /> 
+    <Title />
 
     <h3>
       <span tw="text-xl mx-24">
@@ -37,12 +37,16 @@ const App = () => (
       <span css={headers.container()}>Overview</span>
       <br></br>
       <span tw="text-sm">
-      Our problem was that we wanted to develop a method of taking images from the past,
-      particularly landscape images, and develop a realistically colored version of that 
-      image. We did this by training a convolutional neural network on the&nbsp;
-      <a tw="text-blue-600" href="https://github.com/universome/alis#lhq-dataset">
-        LHQ256 dataset
-      </a>
+        Our problem was that we wanted to develop a method of taking images from
+        the past, particularly landscape images, and develop a realistically
+        colored version of that image. We did this by training a convolutional
+        neural network on the&nbsp;
+        <a
+          tw="text-blue-600"
+          href="https://github.com/universome/alis#lhq-dataset"
+        >
+          LHQ256 dataset
+        </a>
       </span>
       <br></br>
       <br></br>
@@ -55,18 +59,23 @@ const App = () => (
           href="https://lukemelas.github.io/image-colorization.html"
         >
           image colorizer
-        </a> 
-        &nbsp;by Luke Melas Kyriazi which 
-        implements the encoder with the first 5 blocks of ResNet18. In our project, the encoder 
-        instead implements the first 4 blocks of EfficientNet-B0 since it has been proven to achieve 
-        high accuracy with fewer parameters compared to ResNet18. The encoder takes a single-channel 
-        grayscale image as an input. The encoded features are then combined with the features 
-        extracted by the first 4 blocks of pre-trained EfficientNet-B1 (provided by a PyTorch library). 
-        The decoder is composed of convolutional and upsampling layers which attempt to predict the A 
-        and B color channels, from the combined features. We then combine the L 
-        channel of the original image with the outputted A and B channels to generate a fully realized 
-        image in LAB colorspace. The full implementation of our model can be found in our&nbsp;  
-        <a tw="text-blue-600" href="https://github.com/laphon/image_colorization">
+        </a>
+        &nbsp;by Luke Melas Kyriazi which implements the encoder with the first
+        5 blocks of ResNet18. In our project, the encoder instead implements the
+        first 4 blocks of EfficientNet-B0 since it has been proven to achieve
+        high accuracy with fewer parameters compared to ResNet18. The encoder
+        takes a single-channel grayscale image as an input. The encoded features
+        are then combined with the features extracted by the first 4 blocks of
+        pre-trained EfficientNet-B1 (provided by a PyTorch library). The decoder
+        is composed of convolutional and upsampling layers which attempt to
+        predict the A and B color channels, from the combined features. We then
+        combine the L channel of the original image with the outputted A and B
+        channels to generate a fully realized image in LAB colorspace. The full
+        implementation of our model can be found in our&nbsp;
+        <a
+          tw="text-blue-600"
+          href="https://github.com/laphon/image_colorization"
+        >
           GitHub repository
         </a>
         .
@@ -130,12 +139,14 @@ const App = () => (
       <br></br>
       <br></br>
       <span tw="text-xl font-semibold">Video</span>
-      <video controls={true} height="480" width="640" tw="mt-5">
-        <source src="https://www.dropbox.com/s/4tx8y99wrhcfwfk/image_colorizer_video.mp4?raw=1" 
-                type="video/mp4">
-
-        </source>
-      </video>
+      <div tw="flex justify-center">
+        <video controls={true} tw="mt-5 w-4/5">
+          <source
+            src="https://www.dropbox.com/s/4tx8y99wrhcfwfk/image_colorizer_video.mp4?raw=1"
+            type="video/mp4"
+          ></source>
+        </video>
+      </div>
       <br></br>
       <br></br>
       <span tw="text-xl font-semibold">Contributors</span>
