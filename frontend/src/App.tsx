@@ -40,6 +40,12 @@ const App = () => (
       <span css={headers.container()}>Overview</span>
       <br></br>
       <span tw="text-sm">
+      Our problem was that we wanted to develop a method of taking images from the past,
+      particularly landscape images, and develop a realistically colored version of that 
+      image. We did this by training a convolutional neural network on the&nbsp;
+      <a tw="text-blue-600" href="https://github.com/universome/alis#lhq-dataset">
+        LHQ256 dataset
+      </a>.
         Our problem was that we wanted to develop a method of taking images from
         the past, particularly landscape images, and develop a realistically
         colored version of that image. We did this by training a convolutional
@@ -60,23 +66,18 @@ const App = () => (
           href="https://lukemelas.github.io/image-colorization.html"
         >
           image colorizer
-        </a>
-        &nbsp;by Luke Melas Kyriazi which implements the encoder with the first
-        5 blocks of ResNet18. In our project, the encoder instead implements the
-        first 4 blocks of EfficientNet-B0 since it has been proven to achieve
-        high accuracy with fewer parameters compared to ResNet18. The encoder
-        takes a single-channel grayscale image as an input. The encoded features
-        are then combined with the features extracted by the first 4 blocks of
-        pre-trained EfficientNet-B1 (provided by a PyTorch library). The decoder
-        composed of layers of convolution and upsampling will attempt to
-        predict, from the combined features, the A and B color channels which
-        are then combined with the L channel of the original image to generate a
-        fully realized image in LAB colorspace. The full implementation of our
-        model can be found in our&nbsp;
-        <a
-          tw="text-blue-600"
-          href="https://github.com/laphon/image_colorization"
-        >
+        </a> 
+        &nbsp;by Luke Melas Kyriazi which 
+        implements the encoder with the first 5 blocks of ResNet18. In our project, the encoder 
+        instead implements the first 4 blocks of EfficientNet-B0 since it has been proven to achieve 
+        high accuracy with fewer parameters compared to ResNet18. The encoder takes a single-channel 
+        grayscale image as an input. The encoded features are then combined with the features 
+        extracted by the first 4 blocks of pre-trained EfficientNet-B1 (provided by a PyTorch library). 
+        The decoder is composed of convolutional layers in which upsampling will attempt to predict, from 
+        the combined features, the A and B color channels which are then combined with the L 
+        channel of the original image to generate a fully realized image in LAB colorspace. The full 
+        implementation of our model can be found in our&nbsp;  
+        <a tw="text-blue-600" href="https://github.com/laphon/image_colorization">
           GitHub repository
         </a>
         .
