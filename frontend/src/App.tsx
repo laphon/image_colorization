@@ -5,8 +5,8 @@ import Transfomer from "./components/Transformer";
 import diagram from "./model-diagram.jpg";
 import plot from "./plot-losses.png";
 import images from "./pics.png";
-//@ts-expect-error
-import Head from "next/head";
+// //@ts-expect-error
+// import Head from "next/head";
 
 const styles = {
   // Move long class sets out of jsx to keep it scannable
@@ -23,10 +23,10 @@ const headers = {
 
 const App = () => (
   <div css={styles.container({ hasBackground: false })}>
-    <Head>
+    {/* <Head>
       <title>Image colorizer</title>
     </Head>
-    <Title />
+    <Title /> */}
 
     <h3>
       <span tw="text-xl mx-24">
