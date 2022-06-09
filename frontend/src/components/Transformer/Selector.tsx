@@ -75,20 +75,6 @@ const blobUrlToFile = (blobUrl: string): Promise<File> =>
       url = blobUrl;
     }
     fetch(url, {
-      headers: {
-        accept:
-          "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
-        "accept-language": "en,th-TH;q=0.9,th;q=0.8",
-        "cache-control": "no-cache",
-        pragma: "no-cache",
-        "sec-ch-ua":
-          '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "sec-fetch-dest": "image",
-        "sec-fetch-mode": "no-cors",
-        "sec-fetch-site": "cross-site",
-      },
       referrer: window.location.hostname,
       referrerPolicy: "strict-origin-when-cross-origin",
       body: null,
