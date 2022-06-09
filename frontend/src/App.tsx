@@ -23,10 +23,7 @@ const headers = {
 
 const App = () => (
   <div css={styles.container({ hasBackground: false })}>
-    {/* <Head>
-      <title>Image colorizer</title>
-    </Head>
-    <Title /> */}
+    <Title /> 
 
     <h3>
       <span tw="text-xl mx-24">
