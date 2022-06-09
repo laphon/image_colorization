@@ -14,7 +14,6 @@ const colorImgApi = async (img: File, setDestImg: (img: File) => void) => {
       headers: {
         Accept: "application/json",
       },
-      referrer: window.location.hostname,
       referrerPolicy: "strict-origin-when-cross-origin",
       mode: "cors",
       body: data,
