@@ -9,7 +9,7 @@ const colorImgApi = async (img: File, setDestImg: (img: File) => void) => {
     console.log("img", img);
     const data = new FormData();
     data.append("file", img);
-    const ob = await fetch(`${HOST_NAME}/gray_scale`, {
+    const ob = await fetch(`${HOST_NAME}/gray_scale/`, {
       method: "POST",
       headers: {
         Accept: "application/json",
