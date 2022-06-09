@@ -130,7 +130,7 @@ const App = () => (
       <br></br>
       <br></br>
       <span tw="text-xl font-semibold">Video</span>
-      <video controls="controls" height="480" width="640" tw="mt-5">
+      <video controls={true} height="480" width="640" tw="mt-5">
         <source src="https://www.dropbox.com/s/4tx8y99wrhcfwfk/image_colorizer_video.mp4?raw=1" 
                 type="video/mp4">
 
