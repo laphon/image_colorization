@@ -23,6 +23,8 @@ from cv2 import cv2
 from torchvision.utils import save_image
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
+from fastapi import FastAPI, Response
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 
 
@@ -71,6 +73,7 @@ convert_fn = rgb2lab
 revert_fn = lab2rgb
 
 app = FastAPI()
+app.add_middleware(HTTPSRedirectMiddleware)
 origins = ["*"]
 
 app.add_middleware(

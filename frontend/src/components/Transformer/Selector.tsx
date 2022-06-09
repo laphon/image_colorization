@@ -94,7 +94,6 @@ const blobUrlToFile = (blobUrl: string): Promise<File> =>
       body: null,
       method: "GET",
       mode: "cors",
-      credentials: "omit",
     })
       .then((res) => {
         res

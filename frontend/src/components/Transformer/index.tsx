@@ -1,5 +1,5 @@
 import Selector from "./Selector";
-import {  useState } from "react";
+import { useState } from "react";
 import { HOST_NAME } from "../../constant";
 import tw from "twin.macro";
 import Loading from "../Loading";
@@ -9,11 +9,13 @@ const colorImgApi = async (img: File, setDestImg: (img: File) => void) => {
     console.log("img", img);
     const data = new FormData();
     data.append("file", img);
-    const ob = await fetch(`${HOST_NAME}/gray_scale`, {
+    const ob = await fetch(`${HOST_NAME}/gray_scale/`, {
       method: "POST",
       headers: {
         Accept: "application/json",
       },
+      referrerPolicy: "strict-origin-when-cross-origin",
+      mode: "cors",
       body: data,
     });
     const blob = await ob.blob();
@@ -37,12 +39,7 @@ const Button = ({ text, onClick }: { text: string; onClick: () => void }) => {
 };
 
 const Image = ({ url }: { url: string }) => {
-  return (
-    <img
-      css={[tw`border`, tw`rounded-xl`, tw`object-cover` ]}
-      src={url}
-    />
-  );
+  return <img css={[tw`border`, tw`rounded-xl`, tw`object-cover`]} src={url} />;
 };
 
 const BothImage = ({ src, dest }: { src: string; dest: string }) => {
