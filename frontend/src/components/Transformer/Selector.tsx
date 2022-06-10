@@ -69,7 +69,7 @@ const DEFAULT_URLS = [
 
 const blobUrlToFile = (blobUrl: string): Promise<File> =>
   new Promise((resolve) => {
-    const localHostReg = new RegExp("localhost");
+    const localHostReg = new RegExp("colorlized.vercel.app");
     let url = `${PROXY_HOST}/${blobUrl}`;
     if (localHostReg.test(url)) {
       url = blobUrl;
